@@ -9,16 +9,17 @@ export default async function HomePage() {
   const {
     data: { user },
   } = await supabase.auth.getUser()
-
+  // console.log("user status : ",user);
   // If user is logged in, redirect to appropriate dashboard
   if (user) {
-    const { data: userData } = await supabase.from("users").select("role").eq("id", user.id).single()
-
+    const { data: userData } = await supabase.from("students").select("role").eq("id", user.id).single()
+    console.log(userData)
     if (userData?.role === "admin") {
       redirect("/admin")
     } else if (userData?.role === "faculty") {
       redirect("/faculty")
     } else if (userData?.role === "student") {
+      
       redirect("/student")
     }
   }

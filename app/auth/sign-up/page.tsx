@@ -20,6 +20,7 @@ export default function SignUpPage() {
     password: "",
     confirmPassword: "",
     fullName: "",
+    rollNumber: "", // New: Added rollNumber field
     phone: "",
     role: "",
   })
@@ -67,6 +68,7 @@ export default function SignUpPage() {
             process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/auth/callback`,
           data: {
             full_name: formData.fullName,
+            roll_number: formData.rollNumber, // New: Added roll number to user metadata
             phone: formData.phone,
             role: formData.role,
           },
@@ -137,6 +139,19 @@ export default function SignUpPage() {
                   />
                 </div>
 
+                {/* New: Roll Number Input Field */}
+                <div className="space-y-2">
+                  <Label htmlFor="rollNumber">Roll Number</Label>
+                  <Input
+                    id="rollNumber"
+                    type="text"
+                    placeholder="250156604" 
+                    required
+                    value={formData.rollNumber}
+                    onChange={(e) => handleInputChange("rollNumber", e.target.value)}
+                  />
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address</Label>
                   <Input
@@ -149,17 +164,7 @@ export default function SignUpPage() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="+91 9876543210"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
-                  />
-                </div>
-
+                
                 <div className="space-y-2">
                   <Label htmlFor="role">Role</Label>
                   <Select value={formData.role} onValueChange={(value) => handleInputChange("role", value)}>

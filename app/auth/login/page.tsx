@@ -35,7 +35,7 @@ export default function LoginPage() {
 
       if (error) throw error
 
-      router.push("/")
+      router.push("/auth/redirect")
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred")
     } finally {

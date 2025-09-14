@@ -1,8 +1,7 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
-import { createClient } from "@/lib/supabase/client"
-import { useRouter } from "next/navigation"
+import React, { useState } from "react"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -39,8 +38,6 @@ const demoSubjects: Record<string, string[]> = {
 }
 
 export default function StudentDashboard() {
-  const [user, setUser] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [isDataSubmitted, setIsDataSubmitted] = useState(false)
   const [selection, setSelection] = useState({
     curriculum: "",
@@ -49,22 +46,6 @@ export default function StudentDashboard() {
     semester: "",
   })
   const [subjects, setSubjects] = useState<string[]>([])
-  const router = useRouter()
-  const supabase = createClient()
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) {
-        router.push("/auth/login")
-        return
-      }
-      setUser(user)
-      setIsLoading(false)
-    }
-
-    fetchUser()
-  }, [supabase, router])
 
   const handleSelectChange = (field: string, value: string) => {
     setSelection(prev => ({ ...prev, [field]: value }))
@@ -78,6 +59,9 @@ export default function StudentDashboard() {
       setIsDataSubmitted(true)
     }
   }
+
+  // The loading state is no longer needed since the user check is removed
+  const isLoading = false;
 
   if (isLoading) {
     return (
@@ -160,7 +144,6 @@ export default function StudentDashboard() {
     )
   }
 
-  // Render the dashboard content after the form is submitted
   return (
     <div className="space-y-6 p-6">
       <div className="flex justify-between items-center">
